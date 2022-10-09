@@ -1,4 +1,4 @@
-package lab2;
+package exercise1;
 
 public class NumberInfo {
 	private int limit;

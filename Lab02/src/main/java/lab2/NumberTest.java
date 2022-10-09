@@ -20,7 +20,6 @@ public class NumberTest {
 
 		number.getValue();
 		System.out.println(number.getValue());
-
 	}
 
 }
