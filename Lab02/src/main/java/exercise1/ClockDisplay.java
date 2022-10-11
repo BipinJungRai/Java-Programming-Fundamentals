@@ -20,30 +20,27 @@ public class ClockDisplay {
 			hours.increment();
 		}
 	}
-
-	@Override
+	
 	public String toString() {
 		DecimalFormat style24 = new DecimalFormat("00");
 		DecimalFormat style12 = new DecimalFormat("0");
 		
 		if (type == true) {
 			if (hours.getValue() > 12) {
-				return ( style12.format(this.hours.getValue() - 12)  +
-						":" + style24.format(this.minutes.getValue()) + "pm");
-			}
-			if (hours.getValue() < 12) {
-				return ( style12.format(this.hours.getValue())  +
-						":" + style24.format(this.minutes.getValue()) + "am");
+				return (style12.format(this.hours.getValue() - 12) + ":" + style24.format(this.minutes.getValue()) + "pm");
 			}
 			if (hours.getValue() == 12) {
-				return ( style24.format(this.hours.getValue())  +
-						":" + style24.format(this.minutes.getValue()) + "pm");
+				return (style12.format(this.hours.getValue()) + ":" + style24.format(this.minutes.getValue()) + "pm");
 			}
+			else {
+				return (style12.format(this.hours.getValue()) + ":" + style24.format(this.minutes.getValue()) + "am");
+			}
+		}
 		if (type == false) {
-			return ( style24.format(this.hours.getValue()) +
-					":" + style24.format(this.minutes.getValue()) );
+			return (style24.format(this.hours.getValue()) + ":" + style24.format(this.minutes.getValue()));
 		}
 		return null;
 	}
+	
 }
-}
+
