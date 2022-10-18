@@ -8,7 +8,7 @@ public class Food {
 	public Food (String name, double amountofsugar) {
 		super();
 		this.name = name;
-		this.amountOfSugar = amountOfSugar;
+		this.amountOfSugar = amountofsugar;
 	}
 	
 	
