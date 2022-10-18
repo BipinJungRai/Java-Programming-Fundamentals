@@ -5,7 +5,7 @@ public class Food {
 	private String name;
 	private double amountOfSugar;
 	
-	public Food (String name, Double amountofsugar) {
+	public Food (String name, double amountofsugar) {
 		super();
 		this.name = name;
 		this.amountOfSugar = amountOfSugar;
