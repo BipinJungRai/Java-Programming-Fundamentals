@@ -15,3 +15,19 @@ public class Assessment {
 		return maximum;
 		
 	}
+	
+	public double getMark() {
+		return mark;
+	}
+
+	
+	
+public Assessment(String name, double mark) {
+	super();
+	this.name = name;
+	this.maximum = 100;
+	this.mark = mark;
+	
+}
+
+}
