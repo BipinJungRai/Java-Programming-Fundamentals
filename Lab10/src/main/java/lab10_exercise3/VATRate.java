@@ -1,0 +1,20 @@
+
+package lab10_exercise3;
+ 
+public enum VATRate {
+    ZERO(0), LOW(0.05), STANDARD(0.175);
+ 
+    private double percentage;
+ 
+    private VATRate(double percentage) {
+        this.percentage = percentage;
+    }
+    
+    public double getPercentage() {
+        return percentage;
+    }
+ 
+    
+ 
+}
+ 
