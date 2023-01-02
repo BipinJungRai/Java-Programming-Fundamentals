@@ -1,6 +1,7 @@
 package lab9_exercise3;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class Mall extends Shop {
 	private HashMap<Integer, Shop> shops;
@@ -23,11 +24,10 @@ public class Mall extends Shop {
 	public String displayAllShops() {
 		StringBuffer display = new StringBuffer();
 
-		for (var shop : shops.entrySet()) {
+		for (Map.Entry<Integer, Shop> shop : shops.entrySet()) {
 			display.append(
 					shop.getKey() + " : " + shop.getValue().displayCatalogue());
 		}
-
 		return display.toString();
 	}
 }
