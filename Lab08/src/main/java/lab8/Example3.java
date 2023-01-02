@@ -1,16 +1,17 @@
 package lab8;
-
+ 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
-
+ 
 /**
  * A simple class used to test out IOExceptions.
  * 
  * @author Stella Kazamia
  */
 public class Example3 {
-
+ 
 	/**
 	 * Main entry point: this is the first method that is run.
 	 * 
@@ -19,8 +20,23 @@ public class Example3 {
 	public static void main(String[] args) {
 		File file = new File("test1.txt");
 		FileWriter fileWriter = null;
-
-		fileWriter = new FileWriter(file);
-
+ 
+		try {
+			fileWriter = new FileWriter(file);
+			fileWriter.write("Adding this line to the file");
+		} catch (FileNotFoundException e) {
+			System.out.println("Could not find file " + file);
+		} catch (IOException e) {
+			System.out.println("Something went wrong");
+		} finally {
+			if (fileWriter != null) {
+				try {
+					fileWriter.close();
+				} catch (IOException e) {
+					System.out.println("Could not close file");
+				}
+			}
+		}
 	}
 }
+ 
