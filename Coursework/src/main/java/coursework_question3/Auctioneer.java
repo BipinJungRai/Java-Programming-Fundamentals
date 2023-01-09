@@ -1,28 +1,22 @@
-package coursework_question2;
+package coursework_question3;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Trader {
+public class Auctioneer extends Dealership {
 
-  protected String name;
 
-  protected HashMap<Advert, User> carsForSale;
+  public Auctioneer(String name) {
+    super(name);
 
-  protected HashMap<Advert, User> soldCars;
-
-  protected HashMap<Advert, User> unsoldCars;
-
-  public Trader(String name) {
-    this.name = name;
-    carsForSale = new HashMap<>();
-    soldCars = new HashMap<>();
-    unsoldCars = new HashMap<>();
   }
 
-  private boolean checkExistence(Car car) {
+  private HashMap<Seller, Integer> sales;
+  private Seller topSeller;
+
+  public boolean checkExistence(Car car) {
     boolean check = false;
-    for (Map.Entry<Advert, User> entry : carsForSale.entrySet()) {
+    for (Map.Entry<Advert, Seller> entry : carsForSale.entrySet()) {
       if (entry.getKey().getCar() == car) {
         check = true;
       }
@@ -32,9 +26,9 @@ public class Trader {
 
   public String displaySoldCars() {
     String output = "SOLD CARS:\n";
-    for (Map.Entry<Advert, User> entry : soldCars.entrySet()) {
-      output = output + entry.getKey().getCar().getID() + " - Purchased by " + name
-          + " with a successful £"
+    for (Map.Entry<Advert, Buyer> entry : soldCars.entrySet()) {
+      output = output + entry.getKey().getCar().getID() + " - Purchased by "
+          + entry.getValue().toString() + " with a successful £"
           + String.format("%.2f", entry.getKey().getHighestOffer().getValue()) + " bid.\n";
     }
     return output;
@@ -46,7 +40,7 @@ public class Trader {
 
   public String displayUnsoldCars() {
     String output = "UNSOLD CARS:\n";
-    for (Map.Entry<Advert, User> entry : unsoldCars.entrySet()) {
+    for (Map.Entry<Advert, Seller> entry : unsoldCars.entrySet()) {
       output = output + entry.getKey().toString();
     }
     return output;
@@ -74,11 +68,14 @@ public class Trader {
       throw new IllegalArgumentException();
 
     }
-    if (carsForSale.containsKey(carAdvert)) {
+    boolean offer = false;
+    if (checkExistence(carAdvert.getCar())) {
       carAdvert.placeOffer(user, value);
-      endSale(carAdvert);
+      return true;
+
+    } else {
+      return false;
     }
-    return true;
   }
 
   public void registerCar(Advert carAdvert, User user, String colour, CarType type, CarBody body,
@@ -95,7 +92,7 @@ public class Trader {
     if (checkExistence(carAdvert.getCar())) {
       return;
     }
-    carsForSale.put(carAdvert, user);
+    carsForSale.put(carAdvert, (Seller) user);
   }
 
 
