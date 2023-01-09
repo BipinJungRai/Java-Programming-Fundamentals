@@ -1,8 +1,6 @@
 package coursework_question4;
 
-import java.io.BufferedReader;
 import java.io.BufferedWriter;
-import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.HashMap;
@@ -43,22 +41,14 @@ public class Auctioneer extends Dealership {
 
   public String displayStatistics() {
     String output = "** Auctioneer - " + name + "**\n";
-
-    BufferedReader r = null;
-    try {
-      r = new BufferedReader(new FileReader("auction_statistics.txt"));
-      String line = r.readLine();
-
-      while (line != null) {
-        output = output + line + "\n";
-      }
-      output = output.substring(0, output.length() - 1);
-      r.close();
-    } catch (IOException e) {
-      e.printStackTrace();
+    String topSellerStr = "Top Seller: " + topSeller.getName() + "\n";
+    String salesBySellerStr = "Sales by Seller:\n";
+    for (Map.Entry<Seller, Integer> entry : sales.entrySet()) {
+      salesBySellerStr += entry.getKey().getName() + " - " + entry.getValue() + " cars sold\n";
     }
-    return output;
+    return output + topSellerStr + salesBySellerStr;
   }
+
 
   public String displayUnsoldCars() {
     String output = "UNSOLD CARS:\n";

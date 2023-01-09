@@ -49,8 +49,18 @@ public class Trader extends Dealership {
 
   @Override
   public String displayStatistics() {
-    return "Statistics";
+    String statistics = "";
+    double totalSales = 0;
+    String allSellers = "";
+    for (Map.Entry<Advert, Buyer> entry : soldCars.entrySet()) {
+      totalSales += entry.getKey().getHighestOffer().getValue();
+      allSellers += entry.getValue().getName() + "\n";
+    }
+    statistics = "** Trader - " + name + "**\nTotal Sales: " + this.soldCars.size()
+        + "\nAll Sellers:\n" + allSellers;
+    return statistics.substring(0, statistics.length() - 1);
   }
+
 
 
   @Override
