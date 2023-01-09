@@ -1,171 +1,126 @@
-/**
+package coursework_question4;
 
-The Auctioneer class represents an auctioneer in an auction system.
-It maintains a list of cars that are for sale, a list of sold cars,
-and a list of unsold cars. An auctioneer also has the ability to check if a
-specific car is available for sale, place an offer on a car, end a sale of a car,
-and display the list of sold cars and unsold cars.
-@author Your Name
-@version 1.0
-*/
-package coursework_question1;
-import java.util.HashMap;
-import java.util.Map;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
-public class Auctioneer {
+import org.junit.Test;
 
-/** The name of the auctioneer. */
-protected String name;
+public class TraderJTest {
 
-/** A map of car adverts that are for sale and the corresponding seller. */
-protected HashMap<Advert, User> carsForSale;
+  Trader trader = new Trader("AutoTrader");
 
-/** A map of sold car adverts and the corresponding buyers. */
-protected HashMap<Advert, User> soldCars;
+  @Test
+  public void coursework_testTrader() {
+    trader = new Trader("Adam Hills");
+  }
 
-/** A map of unsold car adverts and the corresponding sellers. */
-protected HashMap<Advert, User> unsoldCars;
+  @Test
+  public void coursework_testDisplayNoSoldCars() {
+    Car car = new Car(1234, "Mazda 3", 20000, Condition.NEW, SaleType.FORSALE);
+    User seller = new Seller("Sid James");
+    Advert ad = new Advert(car);
 
-/**
+    trader.registerCar(ad, seller, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+    assertEquals("SOLD CARS:\n" + "", trader.displaySoldCars());
 
-Constructs a new Auctioneer with the given name.
-@param name the name of the auctioneer
-*/
-public Auctioneer(String name) {
-this.name = name;
-carsForSale = new HashMap<>();
-soldCars = new HashMap<>();
-unsoldCars = new HashMap<>();
+  }
+
+  @Test
+  public void coursework_testDisplaySoldCars() {
+    Car car = new Car(1234, "Mazda 3", 20000, Condition.NEW, SaleType.FORSALE);
+    User seller = new Seller("Sid James");
+    User buyer = new Buyer("Stella Kazamia", 40);
+
+    Advert ad = new Advert(car);
+
+    trader.registerCar(ad, seller, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+    trader.placeOffer(ad, buyer, 20000);
+    assertEquals(
+        "SOLD CARS:\n" + "1234 - Purchased by S***a with a successful £20000.00 bid.\n",
+        trader.displaySoldCars());
+    System.out.println(trader.displaySoldCars());
+
+  }
+
+  @Test
+  public void coursework_testDisplayNoUnsoldCars() {
+    Car car = new Car(1234, "Mazda 3", 20000, Condition.NEW, SaleType.FORSALE);
+    User seller = new Seller("Sid James");
+    User buyer2 = new Buyer("Bob Ross", 21);
+
+    Advert ad = new Advert(car);
+
+    trader.registerCar(ad, seller, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+    trader.placeOffer(ad, buyer2, 21000);
+    assertEquals("UNSOLD CARS:\n" + "", trader.displayUnsoldCars());
+  }
+
+  @Test
+  public void coursework_testDisplayUnsoldCars() {
+    Car car = new Car(1234, "Mazda 3", 20000, Condition.NEW, SaleType.FORSALE);
+    User seller = new Seller("Sid James");
+    User buyer = new Buyer("Stella Kazamia", 80);
+
+    Advert ad = new Advert(car);
+
+    trader.registerCar(ad, seller, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+    trader.placeOffer(ad, buyer, 15000);
+    assertEquals("UNSOLD CARS:\n" + "Ad: 1234 - Mazda 3 (£20000.00)\n" + "\tType: AUTOMATIC\n"
+        + "\tStyle: HATCHBACK\n" + "\tColour: Blue\n" + "\tNo. of Seats: 5\n"
+        + "\tCondition: NEW\n", trader.displayUnsoldCars());
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void coursework_testInvalidRegister() {
+    trader.registerCar(null, null, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+  }
+
+  @Test(expected = IllegalArgumentException.class)
+  public void coursework_testInvalidPlaceOffer() {
+    trader.placeOffer(null, null, 19999.99);
+  }
+
+  @Test
+  public void coursework_testPlaceOffer() {
+    Car car = new Car(8907, "Mazda 3", 4000, Condition.USED, SaleType.FORSALE);
+    User seller = new Seller("Sid James");
+    User buyer = new Buyer("Nancy Health", 19);
+
+    Advert ad = new Advert(car);
+
+    trader.registerCar(ad, seller, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+
+    assertTrue(trader.placeOffer(ad, buyer, 4005));
+  }
+
+
+  @Test
+  public void coursework_testFileStatistics() {
+    Car car6 = new Car(1234, "Mazda 3", 2000, Condition.USED, SaleType.FORSALE);
+    Car car7 = new Car(2345, "Chevrolet", 4500, Condition.USED, SaleType.FORSALE);
+    Car car8 = new Car(6789, "Toyota Auris", 2000, Condition.USED, SaleType.FORSALE);
+    Car car9 = new Car(0123, "Vauxhal", 1500, Condition.USED, SaleType.FORSALE);
+
+    User seller = new Seller("Sid James");
+    User seller2 = new Seller("Alice Wonderland");
+    User buyer = new Buyer("Bob Ross", 40);
+
+    Advert ad6 = new Advert(car6);
+    Advert ad7 = new Advert(car7);
+    Advert ad8 = new Advert(car8);
+    Advert ad9 = new Advert(car9);
+
+    trader.registerCar(ad6, seller2, "Blue", CarType.AUTOMATIC, CarBody.HATCHBACK, 5);
+    trader.registerCar(ad7, seller, "Red", CarType.MANUAL, CarBody.MICRO, 4);
+    trader.registerCar(ad8, seller, "Black", CarType.MANUAL, CarBody.PICKUP, 2);
+    trader.registerCar(ad9, seller, "White", CarType.MANUAL, CarBody.SEDAN, 8);
+
+    trader.placeOffer(ad6, buyer, 2000);
+    trader.placeOffer(ad7, buyer, 4500);
+    trader.placeOffer(ad8, buyer, 2000);
+
+    assertEquals("** Trader - AutoTrader**\n" + "Total Sales: 3\n" + "All Sellers:\n"
+        + "\tAlice W. (Sales: 1, Rating: Level 1)\n" + "\tSid J. (Sales: 2, Rating: Level 1)",
+        trader.displayStatistics());
+  }
 }
-/**
-
-Returns true if the given car is available for sale, false otherwise.
-@param car the car to check for availability
-@return true if the car is available for sale, false otherwise
-*/
-public boolean checkExistence(Car car) {
-boolean check = false;
-for (Map.Entry<Advert, User> entry : carsForSale.entrySet()) {
-if (entry.getKey().getCar() == car) {
-check = true;
-}
-}
-return check;
-}
-/**
-
-Returns a list of the sold cars in the following format:
-"SOLD CARS:\n
-Car ID - Purchased by [Buyer Name] with a successful £[highest offer] bid.\n
-..."
-@return a list of the sold cars
-*/
-public String displaySoldCars() {
-String output = "SOLD CARS:\n";
-for (Map.Entry<Advert, User> entry : soldCars.entrySet()) {
-output = output + entry.getKey().getCar().getId() + " - Purchased by " + name
-+ " with a successful £"
-+ String.format("%.2f", entry.getKey().getHighestOffer().getValue()) + " bid.\n";
-}
-return output;
-}
-/**
-
-Returns a list of statistics for the auctioneer.
-@return a list of statistics for the auctioneer
-*/
-public String displayStatistics() {
-return "Statistics";
-}
-/**
-
-Returns a list of the unsold cars in the following format:
-"UNSOLD CARS:\n
-[Advert information]\n
-..."
-@return a list of the unsold cars
-*/
-public String displayUnsoldCars() {
-    String output = "UNSOLD CARS:\n";
-    for (Map.Entry<Advert, User> entry : unsoldCars.entrySet()) {
-    output = output + entry.getKey().toString();
-    }
-    return output;
-    }
-    /**
-    
-    Ends the sale of the given car advert. If the highest offer on the advert is equal to or greater
-    than the price of the car, the car is considered sold and is moved to the list of sold cars.
-    Otherwise, the car is considered unsold and is moved to the list of unsold cars.
-    @param advert the advert for the car to end the sale of
-    @throws IllegalArgumentException if the advert is null
-    */
-    public void endSale(Advert advert) {
-    if (advert == null) {
-    throw new IllegalArgumentException();
-    }
-    if (!carsForSale.containsKey(advert)) {
-    return;
-    }
-    if (advert.getHighestOffer().getValue() >= advert.getCar().getPrice()) {
-    soldCars.put(advert, advert.getHighestOffer().getBuyer());
-    carsForSale.remove(advert);
-    } else {
-    unsoldCars.put(advert, carsForSale.get(advert));
-    carsForSale.remove(advert);
-    }
-    }
-    
-    /**
-    
-    Places an offer on the given car advert for the given value. The offer will only be placed if the
-    car is available for sale.
-    @param carAdvert the advert for the car to place an offer on
-    @param user the user placing the offer
-    @param value the value of the offer
-    @return true if the offer was successfully placed, false otherwise
-    @throws IllegalArgumentException if the car advert or user is null
-    */
-    public boolean placeOffer(Advert carAdvert, User user, double value) {
-    if (carAdvert == null || user == null) {
-    throw new IllegalArgumentException();
-    }
-    if (checkExistence(carAdvert.getCar())) {
-    carAdvert.placeOffer(user, value);
-    return true;
-    
-    } else {
-    return false;
-    }
-    }
-    
-    /**
-    
-    Registers the given car advert for sale and sets the car's colour, number of seats, gearbox type,
-    and body type. The car will only be registered for sale if it is not already available for sale.
-    @param carAdvert the advert for the car to register for sale
-    @param user the user selling the car
-    @param colour the colour of the car
-    @param type the gearbox type of the car
-    @param body the body type of the car
-    @param noOfSeats the number of seats in the car
-    @throws IllegalArgumentException if the car advert or user is null
-    */
-    public void registerCar(Advert carAdvert, User user, String colour, CarType type, CarBody body,
-    int noOfSeats) {
-
-        if (carAdvert == null || user == null) {
-        throw new IllegalArgumentException();
-        }
-        carAdvert.getCar().setColour(colour);
-        carAdvert.getCar().setNumberOfSeats(noOfSeats);
-        carAdvert.getCar().setGearbox(type);
-        carAdvert.getCar().setBody(body);
-        
-        if (checkExistence(carAdvert.getCar())) {
-        return;
-        }
-        carsForSale.put(carAdvert, user);
-        }
-        
-        }
